@@ -1,0 +1,123 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>無題ドキュメント</title>
+<style>
+/*基本は以下の3つのプロパティで動きます*/
+.hd_ac + label + section {
+	max-height: 0;
+	overflow-y: hidden;
+	transition: .5s;
+}
+.hd_ac:checked + label + section {
+	max-height: 100em;
+}
+.hd_ac {
+	display: none;
+}
+/*以下は装飾部分です*/
+div {
+	margin-bottom: 5rem;
+}
+h2 {
+	font-size: 1.5rem;
+	font-weight: bold;
+	color: #f60;
+	border-bottom: 2px solid;
+	margin: 0;
+	padding: 0.25rem;
+	position: relative;
+	cursor: pointer;
+}
+h2:hover {
+	background: rgba(255,204,153,0.5);
+}
+section {
+	background: #eee;
+}
+p {
+	margin: 0.5rem;
+}
+/*矢印などの装飾は以下*/
+h2::after {
+	content: "";
+	display: block;
+	width: 0.75rem;
+	height: 0.75rem;
+	border-top: 2px solid;
+	border-right: 2px solid;
+	position: absolute;
+	top: 50%;
+	right: 1rem;
+	transform: translateY(-50%) rotate(45deg);
+	transition: .2s;
+}
+.hd_ac:checked ~ label h2::after {
+	transform: translateY(-50%) rotate(135deg);
+}
+</style>
+</head>
+
+<body>
+<div>
+	<input type="checkbox" name="drnav" id="hd_01" class="hd_ac">
+	<label for="hd_01">
+	<h2>チェックボックスを利用したアコーディオン</h2>
+	</label>
+	<section>
+		<p>アコーディオンで表示される本文になります。アコーディオンで表示される本文になります。アコーディオンで表示される本文になります。アコーディオンで表示される本文になります。アコーディオンで表示される本文になります。アコーディオンで表示される本文になります。アコーディオンで表示される本文になります。アコーディオンで表示される本文になります。</p>
+	</section>
+</div>
+<div>
+	<input type="radio" name="drnav2" id="hd_02" class="hd_ac">
+	<label for="hd_02">
+	<h2>ここ以下はラジオボタングループです</h2>
+	</label>
+	<section>
+		<p>アコーディオンで表示される本文になります。アコーディオンで表示される本文になります。アコーディオンで表示される本文になります。アコーディオンで表示される本文になります。アコーディオンで表示される本文になります。アコーディオンで表示される本文になります。アコーディオンで表示される本文になります。アコーディオンで表示される本文になります。</p>
+	</section>
+	<input type="radio" name="drnav2" id="hd_03" class="hd_ac">
+	<label for="hd_03">
+	<h2>開くのは常に一つだけです</h2>
+	</label>
+	<section>
+		<p>アコーディオンで表示される本文になります。アコーディオンで表示される本文になります。アコーディオンで表示される本文になります。アコーディオンで表示される本文になります。アコーディオンで表示される本文になります。アコーディオンで表示される本文になります。アコーディオンで表示される本文になります。アコーディオンで表示される本文になります。</p>
+	</section>
+	<input type="radio" name="drnav2" id="hd_04" class="hd_ac">
+	<label for="hd_04">
+	<h2>一つは開きっぱなしになります（解除にはjsが必要）</h2>
+	</label>
+	<section>
+		<p>アコーディオンで表示される本文になります。アコーディオンで表示される本文になります。アコーディオンで表示される本文になります。アコーディオンで表示される本文になります。アコーディオンで表示される本文になります。アコーディオンで表示される本文になります。アコーディオンで表示される本文になります。アコーディオンで表示される本文になります。</p>
+	</section>
+</div>
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/2.2.0/jquery.min.js"></script> 
+<script>
+//ラジオボタン選択解除用スクリプト
+// 予めチェックされているもの
+var nowchecked = [];
+$('input[type="radio"]:checked').each(function(){
+	nowchecked.push( $(this).attr('id') );
+});
+$('input[type="radio"]').click(function(){
+	var idx = $.inArray( $(this).attr('id'), nowchecked ); // nowcheckedにクリックされたボタンのidが含まれるか判定。なければ-1が返る。
+	if( idx >= 0 ) { // クリックしたボタンにチェックが入っていた場合
+		$(this).prop('checked', false); // チェックを外す
+		nowchecked.splice(idx,1); // nowcheckedからこのボタンのidを削除
+	} else { // チェックが入っていなかった場合
+	// 同じname属性のラジオボタンをnowcheckedから削除する
+		var name = $(this).attr('name');
+		$('input[name="' + name + '"]').each(function(){
+			var idx2 = $.inArray( $(this).attr('id'), nowchecked);
+			if( idx2 >= 0 ){
+				nowchecked.splice(idx2,1);
+			}
+		});
+		// チェックしたものをnowcheckedに追加
+		nowchecked.push( $(this).attr('id') );
+	}
+});
+</script>
+</body>
+</html>
